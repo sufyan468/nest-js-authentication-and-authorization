@@ -20,7 +20,7 @@ async function bootstrap() {
 
   // Global Guards (see https://docs.nestjs.com/guards#global-guards)
   const reflector = app.get(Reflector);
-  app.useGlobalGuards(new RolesGuard(reflector));
+  app.useGlobalGuards(new RolesGuard(reflector, app.get('UsersService')));
 
   // app starts listening on port 3003
   await app.listen(3003);

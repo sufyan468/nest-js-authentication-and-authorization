@@ -27,7 +27,7 @@ export class ProductController {
   @ApiOperation({
     summary: 'create a product',
   })
-  @Roles ('admin')
+  @Roles('admin')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @UsePipes(ValidationPipe)
   async create(@Body() createProductDto: CreateProductDto) {
