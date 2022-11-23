@@ -19,6 +19,7 @@ export class UsersService {
       user.username = createUserDto.username;
       user.email = createUserDto.email;
       user.password = hashPassword;
+      user.role = createUserDto.role;
       return this.userRepository.save(user);
     } catch (err) {
       throw new Error(`Error creating ${err} user ${err.message}`);
@@ -31,9 +32,9 @@ export class UsersService {
         where: { email },
       });
       const isMatch = await bcrypt.compare(password, user.password);
-      if(user && isMatch) {
+      if (user && isMatch) {
         return user;
-      }else {
+      } else {
         throw new Error(`User not found`);
       }
     } catch (err) {
