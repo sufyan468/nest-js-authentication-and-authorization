@@ -1,4 +1,5 @@
 import {
+  IsBoolean,
   IsNotEmpty,
   IsString,
   Matches,
@@ -24,4 +25,10 @@ export class CreateUserDto {
     message: 'password too weak',
   })
   password: string;
+
+  @IsString()
+  @IsNotEmpty({
+    message: 'Role is required',
+  })
+  role: string;
 }

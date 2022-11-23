@@ -1,40 +1,35 @@
 import { Products } from './entity/products.entity';
-import {
-  Controller,
-  Get,
-  UseGuards,
-  Request,
-  Post,
-  Body,
-  Headers,
-} from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Controller, Get, UseGuards, Post, Body, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ProductService } from './produts.service';
-import { HttpService } from '@nestjs/axios';
 import { CreateProductDto } from './dto/products.dto';
 import { ApiOperation } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { JwtStrategy } from 'src/auth/strategies/jwt.strategy';
-import { AuthService } from 'src/auth/auth.service';
+import { Roles } from 'src/auth/decorator/roles.decorator';
+import { Role } from '../enums/role.enum';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 @Controller('products')
 export class ProductController {
   constructor(private readonly productsService: ProductService) {}
 
-  @UseGuards(AuthGuard('jwt'))
+  @Get('/all')
   @ApiOperation({
     summary: 'Find all products',
   })
-  @Get('/all')
+  @Roles(Role.Admin)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @UsePipes(ValidationPipe)
   async findAll(): Promise<Products[]> {
     return await this.productsService.findAll();
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @Post('/create')
   @ApiOperation({
     summary: 'create a product',
   })
-  @Post('/create')
+  @Roles('admin')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @UsePipes(ValidationPipe)
   async create(@Body() createProductDto: CreateProductDto) {
     return await this.productsService.create(createProductDto);
   }
