@@ -33,6 +33,7 @@ export class UsersService {
       });
       const isMatch = await bcrypt.compare(password, user.password);
       if (user && isMatch) {
+
         return user;
       } else {
         throw new Error(`User not found`);
