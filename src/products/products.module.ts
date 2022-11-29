@@ -5,13 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseModule } from '../database/database.module';
 import { Products } from './entity/products.entity';
 import { HttpModule } from '@nestjs/axios';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { UsersService } from '../users/users.service';
 
 @Module({
-  controllers: [ProductController],
-  providers: [ProductService, RolesGuard],
-  exports: [ProductService, UsersService],
   imports: [DatabaseModule, TypeOrmModule.forFeature([Products]), HttpModule],
+  controllers: [ProductController],
+  providers: [ProductService],
+  exports: [ProductService],
 })
 export class ProductsModule {}

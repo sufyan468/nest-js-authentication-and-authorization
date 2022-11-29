@@ -16,12 +16,9 @@ export class AuthService {
   async login(user: any) {
     try {
       const payload = { email: user.email, sub: user.id, role: user.role };
-      const token = {
-        access_token: this.jwtService.sign(payload),
-      };
       return {
-        username: payload,
-        ...token,
+        ...payload,
+        token: this.jwtService.sign(payload),
       };
     } catch (error) {
       throw new Error(`Error logging in ${error} user ${error.message}`);
